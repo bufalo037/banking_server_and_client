@@ -1,0 +1,57 @@
+===============================================================================
+================================== Tema 2 PC ==================================
+============================== Mihai Costea 322CB =============================
+===============================================================================
+
+===============================================================================
+Server:
+
+Servverul se foloseste de 2 structuri de date definite de catre mine si anume,
+info si client_status. Info este o structura care tine data generale despre un
+anumit cont bancar (e.g. daca este blocat, cati bani are, etc.) si client_status
+tine date generale despre un client anume (e.g. la a cata incercare de conectare
+se afla etc.). Am folosit pe partea de server un map pentru a lega fiecare numar
+de card cu informatiile aferete din info si un alt map pentru a lega fiecare 
+filedescriptor (i.e. descriptorul de socketi activi) de fiecare client.
+Un client poate incerca de 3 ori sa se conecteze la un card si daca da fail de
+3 ori consecutiv card-ul se blocheaza, in schimb daca acesta schimba cardul
+poate sa reincerce cardul vechi lucru care poate aduce la exploit-uri dar, pana
+la urma asta scria pe forum.
+Nu am folosit strtok pentru parsarea mesajelor de la client deoarece am vrut
+ca mesajul sa fie cat mai strict. Strtok ar taia un numar arbitrar de spatii
+intre parametrii unei comenzi iar eu am vrut sa fie cat mai aproape de cum
+aratau exemplele din pdf.
+De asemenea codul am vrut sa il pastrez cat mai C like. Singurele elemente pe 
+care le-am folosit din C++ au fost unordered_map si unodered_set din biblioteca
+STL. 
+
+Sidenode. Se putea face un pic mai eficient prin a renunta la unordered set si
+sa folosesc numai unordered_map. Dar am realizat acest lucru cand eram cu codul
+cam pe jumatate scris si am zis ca nu merita sa mai modific, dar, se poate 
+optimiza daca se doreste.
+
+===============================================================================
+===============================================================================
+
+Client:
+
+La client am ales un port random cu seed dupa timpul actual al masinii care 
+ruleaza programul deoarece acesta nu era specificat nicaieri iar daca pe aceasi
+masina ar fi existat mai multi client asta ar fi insemnat ca ar fi folosit 
+aceleas port in caz de l-as fi hardcodat care cel mai probabil ar fi dat erroare.
+Am folosit select si pentru client deoarece in caz de serverul ar fi trimis un
+quit, acesta ar trebui sa isi intrerupa activitatea normala (i.e. sa citeasca
+de la tastatura si sa trimita comenzi serveului) ca sa interpreteze mesajul dat
+de server. Si in caz de server-ul a trimis quit acesta sa elibereze toata memoria
+sa inchida toti file descriptorii si sa opreasca executia procesului. Un client
+se poate sa dea qut midsesion si alt client va putea sa se conecteze dupa la 
+server. Quit face si logout ca sa nu "blochez" accesul la un card printr-un 
+quit.
+
+===============================================================================
+===============================================================================
+
+Functionalitatea de quit este implementata si pentru client si pentru server.
+
+===============================================================================
+===============================================================================
